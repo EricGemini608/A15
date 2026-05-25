@@ -16,7 +16,7 @@
         .cover-container {
             position: relative;
             width: 100%; max-width: 500px; height: 100vh; max-height: 850px;
-            /* 🎨 這裡已經把粉紅街機圖變成純文字碼，永久內嵌，不會失效！ */
+            /* 🎨 粉紅復古街機封面圖純文字內嵌，不需要另外上傳圖片檔 */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="100%" height="100%"><rect width="800" height="1100" fill="%235c3db5"/><path d="M 120,200 L 680,200 L 650,400 L 780,750 L 780,1050 L 20,1050 L 20,750 L 150,400 Z" fill="%23f9637c" stroke="%232c3e50" stroke-width="12" stroke-linejoin="round"/><path d="M 120,30 L 680,30 L 680,200 L 120,200 Z" fill="%23ffe66d" stroke="%232c3e50" stroke-width="12" stroke-linejoin="round"/><path d="M 230,150 L 180,60 L 280,110 L 320,40 L 380,120 L 460,50 L 490,130 L 580,60 L 560,140 L 640,90 L 590,160 L 670,160 L 570,180 L 210,180 Z" fill="%23f79ed3" stroke="%235c3db5" stroke-width="6"/><text x="400" y="125" font-family="monospace, sans-serif" font-size="44" font-weight="bold" fill="%235c3db5" text-anchor="middle">高壓與心血管擴張劑</text><path d="M 170,240 L 630,240 L 600,390 L 200,390 Z" fill="%231a252f" stroke="%232c3e50" stroke-width="12" stroke-linejoin="round"/><rect x="220" y="260" width="360" height="110" fill="none" stroke="%23ffe66d" stroke-width="5" rx="10"/><text x="400" y="520" font-family="monospace, Arial" font-size="110" font-weight="bold" fill="%23ab7fff" text-anchor="middle" style="letter-spacing:15px; filter: drop-shadow(5px 5px 0px %232c3e50);">START</text><circle cx="230" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="290" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="260" cy="710" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="260" cy="770" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="510" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="570" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="540" cy="710" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="540" cy="770" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><path d="M 30,900 L 770,900 L 770,1030 L 30,1030 Z" fill="%23e63946" stroke="%232c3e50" stroke-width="8"/><circle cx="100" cy="965" r="22" fill="%23ffe66d" stroke="%232c3e50" stroke-width="6"/><rect x="145" y="945" width="20" height="40" fill="%235c3db5" stroke="%232c3e50" stroke-width="4" rx="5"/><circle cx="700" cy="965" r="22" fill="%23ffe66d" stroke="%232c3e50" stroke-width="6"/><rect x="745" y="945" width="20" height="40" fill="%235c3db5" stroke="%232c3e50" stroke-width="4" rx="5"/><line x1="260" y1="560" x2="540" y2="560" stroke="%23ffe66d" stroke-width="4" stroke-dasharray="15,10"/><circle cx="280" cy="560" r="10" fill="%233498db"/><circle cx="320" cy="560" r="10" fill="%23e74c3c"/><circle cx="360" cy="560" r="10" fill="%23ffffff"/><circle cx="400" cy="560" r="10" fill="%233498db"/><circle cx="440" cy="560" r="10" fill="%23ffffff"/><circle cx="480" cy="560" r="10" fill="%23e74c3c"/><path d="M 400,245 L 400,280" stroke="%23ffe66d" stroke-width="5"/><path d="M 385,280 L 415,280 L 425,300 L 375,300 Z" fill="%23e67e22"/></svg>');
             background-size: contain; background-repeat: no-repeat; background-position: center;
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
@@ -105,7 +105,7 @@
             if (!audioCtx) return;
             let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = "sawtooth"; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, application || audioCtx.currentTime + 0.2);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
         function playCatchSound() {
@@ -140,7 +140,7 @@
             blue: [
                 { q: "請問下列哪一藥物並非血管緊縮素轉換酶抑制劑（ACEI）？", opts: ["Captopril", "Lisinopril", "lrbesarran"], ans: 2, note: "解析：lrbesarran 是血管緊縮素受體阻斷劑（ARBs）。" },
                 { q: "請問下列何者藥物是抗高血壓第一線藥物中的 B 受體阻斷劑？", opts: ["Metoprolol", "Atenolol", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
-                { q: "請問下列何者藥物是抗高血壓第一線藥物中的鈣離子通道阻斷劑（CCBs）？", opts: ["Nifedipine", "Amlodipine", "以上皆是"], rx: 2, ans: 2, note: "解析：以上皆是。" },
+                { q: "請問下列何者藥物是抗高血壓第一線藥物中的鈣離子通道阻斷劑（CCBs）？", opts: ["Nifedipine", "Amlodipine", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
                 { q: "請問有關抗高血壓第一線藥物中的利尿劑及副作用的配對，下列何者錯誤？", opts: ["Chlorothiazide-高尿酸血症", "Furosemide-高尿酸血症", "Spironolactone-高尿酸血症"], ans: 2, note: "解析：Spironolactone 副作用為男性女乳症。" },
                 { q: "請問有關抗高血壓第一線藥物中的 B 受體阻斷劑的敘述，下列何者正確？", opts: ["降低心跳速率", "抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
                 { q: "請問有關抗高血壓第一線藥物中的利尿劑的敘述下列何者錯誤？", opts: ["促進鈉、水排出，使血量及心輸出量降低", "離子跟水分流失", "會抑制腎素（ranin）分泌"], ans: 2, note: "解析：會抑制腎素（ranin）分泌的是抗高血壓藥物中的 B 受體阻斷劑。" }
@@ -283,7 +283,7 @@
             ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(claw.x, claw.y); ctx.lineTo(claw.x, claw.y + claw.ropeLength); ctx.stroke();
             let curY = claw.y + claw.ropeLength; ctx.fillStyle = "#f39c12"; ctx.fillRect(claw.x - 15, curY, 30, 12); ctx.strokeStyle = "#d35400"; ctx.lineWidth = 4;
             ctx.beginPath(); ctx.moveTo(claw.x - 12, curY + 12); ctx.lineTo(claw.x - 22, curY + 30); ctx.lineTo(claw.x - 8, curY + 36); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(claw.x + 12, curY + 12); ctx.lineTo(claw.x + 22, curY + 30); ctx.lineTo(claw.x + 8, curY + 36); stroke();
+            ctx.beginPath(); ctx.moveTo(claw.x + 12, curY + 12); ctx.lineTo(claw.x + 22, curY + 30); ctx.lineTo(claw.x + 8, curY + 36); ctx.stroke();
         }
         initBalls(); gameLoop();
     </script>
