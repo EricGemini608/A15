@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💊 藥理挑戰：高血電與血管擴張劑 💊</title>
+    <title>💊 藥理挑戰：高血壓與血管擴張劑 💊</title>
     <style>
         #startScreen {
             position: fixed;
@@ -16,8 +16,8 @@
         .cover-container {
             position: relative;
             width: 100%; max-width: 500px; height: 100vh; max-height: 850px;
-            /* 🌐 這裡直接改用雲端網址抓妳的精美機台圖 */
-            background-image: url('https://images.gemini.googleusercontent.com/blob/5742183204731804797'); 
+            /* 📄 這裡改回讀取妳上傳到 GitHub 的本機圖片 */
+            background-image: url('IMG_0238.jpg'); 
             background-size: contain; background-repeat: no-repeat; background-position: center;
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
@@ -135,7 +135,7 @@
                 { q: "請問有關抗高血壓藥物 Prazosin 的敘述，下列何者正確？", opts: ["選擇性抑制alpha1接受器，擴張周邊小動脈血管平滑肌，降低末梢血管阻力", "改善低血壓，治療良性前列腺肥大(BPH)", "會在血液中釋放一氧化氮（NO）"], ans: 0, note: "解析：B 應為改善高血壓；C 此選項所敘述藥物為 Sodium Nitroprusside。" },
                 { q: "請問有關抗高血壓藥物 Sodium Nitroprusside 的敘述，下列何者正確？", opts: ["在血液中釋出一氧化氮(NO)，一氧化氮（NO）引起鳥苷酸環化酶（GC）活化，使GTP代謝產生cGMP，放鬆血管平滑肌", "擴張動脈血管可降低心臟後負荷，擴張靜脈血管可降低靜脈回流與心臟前負荷", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
                 { q: "請問有關抗高血壓藥物-血管擴張劑的敘述下列何者錯誤？", opts: ["直接作用於血管骨骼肌，使血管擴張", "部分藥物擴張小動脈血管的作用會使周邊阻力降低，產生降血壓效果", "部分擴張小靜脈血管，藉引起靜脈回流與減少心輸出量來降血壓"], ans: 0, note: "解析：是直接作用於血管平滑肌。" },
-                { q: "請問有關抗高血壓藥物-血管擴張劑的敘述下列何者正確？", opts: ["目前已被製成外用製劑，用於改善落髮與禿頭", "會造成多毛症", "以上皆入"], ans: 2, note: "解析：以上皆是。" }
+                { q: "請問有關抗高血壓藥物-血管擴張劑的敘述下列何者正確？", opts: ["目前已被製成外用製劑，用於改善落髮與禿頭", "會造成多毛症", "以上皆是"], ans: 2, note: "解析：以上皆是。" }
             ],
             blue: [
                 { q: "請問下列哪一藥物並非血管緊縮素轉換酶抑制劑（ACEI）？", opts: ["Captopril", "Lisinopril", "lrbesarran"], ans: 2, note: "解析：lrbesarran 是血管緊縮素受體阻斷劑（ARBs）。" },
@@ -278,7 +278,7 @@
                 ctx.fillStyle = b.color === "red" ? "#e74c3c" : (b.color === "blue" ? "#3498db" : "#ffffff");
                 ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = "rgba(255,255,255,0.4)"; ctx.beginPath(); ctx.arc(b.x - 5, b.y - 5, 4, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = "#2c3e50"; ctx.lineWidth = 1; stroke();
+                ctx.strokeStyle = "#2c3e50"; ctx.lineWidth = 1; ctx.stroke();
             }
             ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(claw.x, claw.y); ctx.lineTo(claw.x, claw.y + claw.ropeLength); ctx.stroke();
             let curY = claw.y + claw.ropeLength; ctx.fillStyle = "#f39c12"; ctx.fillRect(claw.x - 15, curY, 30, 12); ctx.strokeStyle = "#d35400"; ctx.lineWidth = 4;
