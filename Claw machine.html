@@ -5,67 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💊 藥理挑戰：高血壓與血管擴張劑 💊</title>
     <style>
-        /* ==========================================
-           🎬 全新封面開始畫面樣式 
-           ========================================== */
-        #startScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1a252f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-        }
-        
-        .cover-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px; 
-            height: 100vh;
-            max-height: 850px;
-            /* ⚠️ 請確保妳的圖片檔名與下方 url 內填寫的完全一致 */
-            background-image: url('image_3f70ad.jpg'); 
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
-
-        .start-hitbox {
-            position: absolute;
-            top: 38%;     
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60%;   
-            height: 12%;  
-            cursor: pointer;
-            border-radius: 15px;
-            background-color: rgba(155, 89, 182, 0); 
-            box-shadow: 0 0 0px rgba(155, 89, 182, 0);
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent; 
-        }
-
-        .start-hitbox:hover, .start-hitbox:active {
-            background-color: rgba(155, 89, 182, 0.15); 
-            box-shadow: 0 0 20px rgba(162, 102, 230, 0.6); 
-            transform: translate(-50%, -50%) scale(1.03); 
-        }
-
-        #startScreen.hidden {
-            transform: translateY(-100vh); 
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* ==========================================
-           🎮 遊戲本體核心樣式
-           ========================================== */
         body {
             margin: 0;
             background-color: #1a252f;
@@ -211,12 +150,6 @@
 </head>
 <body>
 
-    <div id="startScreen">
-        <div class="cover-container">
-            <div class="start-hitbox" onclick="startGame()"></div>
-        </div>
-    </div>
-
     <h1>💊 高血壓與血管擴張劑答題機 💊</h1>
     <div class="info-panel">
         <div class="score-box">得分：<span id="scoreText">0</span> / 2700</div>
@@ -252,101 +185,34 @@
 
     <script>
         // ==========================================
-        // 🎵 網頁內建音效合成器引擎 
-        // ==========================================
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        function playDropSound() {
-            if (!audioCtx) return;
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = "sawtooth"; 
-            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
-        }
-
-        function playCatchSound() {
-            if (!audioCtx) return;
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
-            osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.08); 
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.25);
-        }
-
-        function playMissSound() {
-            if (!audioCtx) return;
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = "triangle";
-            osc.frequency.setValueAtTime(130.81, audioCtx.currentTime); 
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.15);
-        }
-
-        // ==========================================
-        // 🎬 封面控制
-        // ==========================================
-        function startGame() {
-            initAudio(); 
-            const startScreen = document.getElementById("startScreen");
-            startScreen.classList.add("hidden"); 
-            setTimeout(() => {
-                startScreen.style.display = "none";
-            }, 600);
-        }
-
-        // ==========================================
-        // 📚 🔍 重新校對：最新 20 題核心題庫
+        // 📚 全新小組討論題庫（1-10簡單、11-16普通、17-20困難）
         // ==========================================
         const quizBank = {
-            white: [ // 💡 簡單題：1 - 10 題
-                { q: "請問有關抗高血壓藥物 Sodium Nitroprusside 的敘述下列何者錯誤？", opts: ["副作用有姿位性低血壓、反射性心跳過速", "嚴重低血壓危象的急救", "這個藥物對光敏感，宜避光使用"], ans: 1, note: "解析：應該是高血壓危害（危象）的急救。" },
-                { q: "請問有關抗高血壓藥物 Hydralazine 的敘述下列何者錯誤？", opts: ["高劑量可能引起可逆性類紅斑性狼瘡症狀", "因擴張血管使得反射性心跳增加", "常與利尿劑或交感神經Alpha接受器阻斷劑併用"], ans: 2, note: "解析：常與利尿劑或交感神經Beta接受器阻斷劑併用。" },
-                { q: "請問有關抗高血壓藥物 Minoxidil 的敘述下列何者正確？", opts: ["會活化血管平滑肌細胞的鉀離子通道，使細胞內鉀離子外流，使膜電位過極化，降低血管興奮性", "本產品對光過敏，宜避光使用", "會造成少毛症"], ans: 0, note: "解析：B 選項的藥物是 Sodium Nitroprusside；C 應為多毛症。" },
-                { q: "請問有關抗高血壓藥物 Diazoxide 的敘述，下列何者正確？", opts: ["短期治療會造成嚴重的急性低血壓", "血糖會上升", "血糖會下降"], ans: 1, note: "解析：A 會造成嚴重的急性高血壓；C 血糖會上升。" },
-                { q: "下列何種抗高血壓藥物不是血管擴張劑？", opts: ["Prazosin", "Hydralazine", "Minoxidil"], ans: 0, note: "解析：A. Prazosin 是交感神經 α 接受器阻斷劑。" },
-                { q: "請問有關抗高血壓藥物 Hydralazine 的敘述，下列何者錯誤？", opts: ["會導致頭痛、噁心、心律不整與末梢神經症狀", "因擴張血管會使反射性心跳增加", "低劑量可能引起可逆性類紅斑性狼瘡"], ans: 2, note: "解析：C 應為高劑量可能引起可逆性類紅斑性狼瘡。" },
-                { q: "請問有關抗高血壓藥物 Prazosin 的敘述，下列何者正確？", opts: ["選擇性抑制alpha1接受器，擴張周邊小動脈血管平滑肌，降低末梢血管阻力", "改善低血壓，治療良性前列腺肥大(BPH)", "會在血液中釋放一氧化氮（NO）"], ans: 0, note: "解析：B 應為改善高血壓；C 此選項所敘述藥物為 Sodium Nitroprusside。" },
-                { q: "請問有關抗高血壓藥物 Sodium Nitroprusside 的敘述，下列何者正確？", opts: ["在血液中釋出一氧化氮(NO)，一氧化氮（NO）引起鳥苷酸環化酶（GC）活化，使GTP代謝產生cGMP，放鬆血管平滑肌", "擴張動脈血管可降低心臟後負荷，擴張靜脈血管可降低靜脈回流與心臟前負荷", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
-                { q: "請問有關抗高血壓藥物-血管擴張劑的敘述下列何者錯誤？", opts: ["直接作用於血管骨骼肌，使血管擴張", "部分藥物擴張小動脈血管的作用會使周邊阻力降低，產生降血壓效果", "部分擴張小靜脈血管，藉引起靜脈回流與減少心輸出量來降血壓"], ans: 0, note: "解析：是直接作用於血管平滑肌。" },
-                { q: "請問有關抗高血壓藥物-血管擴張劑的敘述下列何者正確？", opts: ["目前已被製成外用製劑，用於改善落髮與禿頭", "會造成多毛症", "以上皆是"], ans: 2, note: "解析：以上皆是。" }
+            white: [ // 1-10 題
+                { q: "有關抗高血壓藥物 Sodium Nitroprusside 的敘述下列何者錯誤？", opts: ["副作用有姿位性低血壓、反射性心跳過速", "嚴重低血壓危象的急救", "這個藥物對光敏感，宜避光使用"], ans: 1, note: "解析：應該是高血壓危害（危象）的急救。" },
+                { q: "有關抗高血壓藥物 Hydralazine 的敘述下列何者錯誤？", opts: ["高劑量可能引起可逆性類紅斑性狼瘡症狀", "因擴張血管使得反射性心跳增加", "常與利尿劑或交感神經Alpha接受器阻斷劑併用"], ans: 2, note: "解析：常與利尿劑或交感神經Beta（β）接受器阻斷劑併用。" },
+                { q: "有關抗高血壓藥物 Minoxidil 的敘述下列何者正確？", opts: ["會活化血管平滑肌細胞的鉀離子通道，使細胞內鉀離子外流，使膜電位過極化，降低血管興奮性", "本產品對光過敏，宜避光使用", "會造成少毛症"], ans: 0, note: "解析：(B)選項對光過敏且宜避光使用的是 Sodium Nitroprusside；(C)會造成多毛症。" },
+                { q: "有關抗高血壓藥物 Diazoxide 的敘述，下列何者正確？", opts: ["短期治療會造成嚴重的急性低血壓", "血糖會上升", "血糖會下降"], ans: 1, note: "解析：(A)會造成嚴重的急性高血糖（用於低血糖急救）；(C)血糖會上升。" },
+                { q: "下列何種抗高血壓藥物不是血管擴張劑？", opts: ["Prazosin", "Hydralazine", "Minoxidil"], ans: 0, note: "解析：Prazosin 是交感神經 α1 接受器阻斷劑。" },
+                { q: "有關抗高血壓藥物 Hydralazine 的敘述，下列何者錯誤？", opts: ["會導致頭痛、噁心、心律不整與末梢神經症狀", "因擴張血管會使反射性心跳增加", "低劑量可能引起可逆性類紅斑性狼瘡"], ans: 2, note: "解析：高劑量可能引起可逆性類紅斑性狼瘡。" },
+                { q: "有關抗高血壓藥物 Prazosin 的敘述，下列何者正確？", opts: ["選擇性抑制alpha1接受器，擴張周邊小動脈血管平滑肌，降低末梢血管阻力", "改善低血壓，治療良性前列腺肥大(BPH)", "會在血液中釋放一氧化氮（NO）"], ans: 0, note: "解析：(B)應為改善高血壓；(C)在血液中釋放 NO 的是 Sodium Nitroprusside。" },
+                { q: "有關抗高血壓藥物 Sodium Nitroprusside 的敘述，下列何者正確？", opts: ["在血液中釋出一氧化氮(NO)，引起鳥苷酸環化酶（GC）活化，使GTP代謝產生cGMP，放鬆血管平滑肌", "擴張動脈血管可降低心臟後負荷，擴張靜脈血管可降低靜脈回流與心臟前負荷", "以上皆是"], ans: 2, note: "解析：以上皆是。本藥平衡擴張動靜脈，前後負荷皆降低。" },
+                { q: "有關抗高血壓藥物-血管擴張劑的敘述下列何者錯誤？", opts: ["直接作用於血管骨骼肌，使血管擴張", "部分藥物擴張小動脈血管的作用會使周邊阻力降低，產生降血壓效果", "部分擴張小靜脈血管，藉引起靜脈回流與減少心輸出量來降血壓"], ans: 0, note: "解析：是直接作用於血管平滑肌，而非骨骼肌。" },
+                { q: "有關抗高血壓藥物-血管擴張劑的敘述下列何者正確？", opts: ["目前已被製成外用製劑，用於改善落髮與禿頭", "會造成多毛症", "以上皆是"], ans: 2, note: "解析：以上皆是。例如 Minoxidil 常做成生髮水治療落髮。" }
             ],
-            blue: [ // 🔹 普通題：11 - 16 題
-                { q: "請問下列哪一藥物並非血管緊縮素轉換酶抑制劑（ACEI）？", opts: ["Captopril", "Lisinopril", "lrbesarran"], ans: 2, note: "解析：lrbesarran 是血管緊縮素受體阻斷劑（ARBs）。" },
-                { q: "請問下列何者藥物是抗高血壓第一線藥物中的 B 受體阻斷劑？", opts: ["Metoprolol", "Atenolol", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
-                { q: "請問下列何者藥物是抗高血壓第一線藥物中的鈣離子通道阻斷劑（CCBs）？", opts: ["Nifedipine", "Amlodipine", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
-                { q: "請問有關抗高血壓第一線藥物中的利尿劑及副作用的配對，下列何者錯誤？", opts: ["Chlorothiazide-高尿酸血症", "Furosemide-高尿酸血症", "Spironolactone-高尿酸血症"], ans: 2, note: "解析：Spironolactone 副作用為男性女乳症。" },
-                { q: "請問有關抗高血壓第一線藥物中的 B 受體阻斷劑的敘述，下列何者正確？", opts: ["降低心跳速率", "抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
-                { q: "請問有關抗高血壓第一線藥物中的利尿劑的敘述下列何者錯誤？", opts: ["促進鈉、水排出，使血量及心輸出量降低", "離子跟水分流失", "會抑制腎素（ranin）分泌"], ans: 2, note: "解析：會抑制腎素（ranin）分泌的是抗高血壓藥物中的 B 受體阻斷劑。" }
+            blue: [ // 11-16 題
+                { q: "請問下列哪一藥物並非血管緊縮素轉換酶抑制劑（ACEI）？", opts: ["Captopril", "Lisinopril", "Irbesartan"], ans: 2, note: "解析：Irbesartan 是血管緊縮素受體阻斷劑（ARBs）。" },
+                { q: "請問下列何者藥物是抗高血壓第一線藥物中的 β 受體阻斷劑？", opts: ["Metoprolol", "Atenolol", "以上皆是"], ans: 2, note: "解析：以上皆是。Metoprolol 與 Atenolol 皆屬於第一線的 β 阻斷劑。" },
+                { q: "請問下列何者藥物是抗高血壓第一線藥物中的鈣離子通道阻斷劑（CCBs）？", opts: ["Nifedipine", "Amlodipine", "以上皆是"], ans: 2, note: "解析：以上皆是。Nifedipine、Amlodipine 均為臨床常用 CCB 藥物。" },
+                { q: "有關抗高血壓第一線藥物中的利尿劑及副作用的配對，下列何者錯誤？", opts: ["Chlorothiazide - 高尿酸血症", "Furosemide - 高尿酸血症", "Spironolactone - 高尿酸血症"], ans: 2, note: "解析：Spironolactone 為保鉀利尿劑，常見副作用為男性女乳症，而非高尿酸血症。" },
+                { q: "有關抗高血壓第一線藥物中的 β 受體阻斷劑的敘述，下列何者正確？", opts: ["降低心跳速率", "抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。β 阻斷劑可減慢心率並抑制 Renin 的釋放。" },
+                { q: "有關抗高血壓第一線藥物中的利尿劑的敘述下列何者錯誤？", opts: ["促進鈉、水排出，使血量及心輸出量降低", "離子跟水分流失", "會抑制腎素（renin）分泌"], ans: 2, note: "解析：利尿劑排出鈉水會使血壓下降，反而反射性刺激腎素分泌；會抑制腎素分泌的是 β 受體阻斷劑。" }
             ],
-            red: [ // 🔸 困難題：17 - 20 題
-                { q: "請問有關抗高血壓第一線藥物中的 B 受體阻斷劑的敘述下列何者正確？", opts: ["會導致氣管痙攣", "會導致心搏過快", "手足會發熱"], ans: 0, note: "解析：B 會導致心搏過慢；C 手足冰冷。" },
-                { q: "請問有關抗高血壓第一線藥物中的血管緊縮素轉換酶抑制劑的敘述下列何者錯誤？", opts: ["抑制血管緊縮素轉換酶使血管緊縮素II無法合成", "會咳嗽、口乾、味覺降低", "會造成器官痙攣"], ans: 2, note: "解析：會造成氣管痙攣的是抗高血壓第一線藥物中 B 受體阻斷劑。" },
-                { q: "有關抗高血壓第一線藥物的分類與機轉的配對，下列何者正確？", opts: ["利尿劑-促進鈉、水排出，使血量及心輸出量降低", "B受體阻斷劑-抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
-                { q: "請問有關抗高血壓第一線藥物中的 B 受體阻斷劑的敘述下列何者正確？", opts: ["需要注意會掩蓋低血糖的症狀", "心搏會過快", "不會做惡夢"], ans: 0, note: "解析：B 心搏會過慢；C 會做惡夢。" }
+            red: [ // 17-20 題
+                { q: "有關抗高血壓第一線藥物中的 β 受體阻斷劑的敘述下列何者正確？", opts: ["會導致氣管痙攣", "會導致心搏過快", "手足會發熱"], ans: 0, note: "解析：(A)正確（非選擇性 β 阻斷劑易誘發氣喘）；(B)會導致心搏過慢；(C)因周邊血管收縮會導致手足冰冷。" },
+                { q: "有關抗高血壓第一線藥物中的血管緊縮素轉換酶抑制劑（ACEI）的敘述下列何者錯誤？", opts: ["抑制血管緊縮素轉換酶使血管緊縮素II無法合成", "會咳嗽、口乾、味覺降低", "會造成氣管痙攣"], ans: 2, note: "解析：會造成氣管痙攣的是抗高血壓第一線藥物中 β 受體阻斷劑。ACEI 的代表副作用是乾咳。" },
+                { q: "有關抗高血壓第一線藥物的分類與機轉的配對，下列何者正確？", opts: ["利尿劑 - 促進鈉、水排出，使血量及心輸出量降低", "β 受體阻斷劑 - 抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
+                { q: "有關抗高血壓第一線藥物中的 β 受體阻斷劑的敘述下列何者正確？", opts: ["需要注意會掩蓋低血糖的症狀", "心搏會過快", "不會做惡夢"], ans: 0, note: "解析：(A)正確（低血糖引起的交感神經症狀如心悸會被掩蓋）；(B)應為心搏過慢；(C)具脂溶性的 β 阻斷劑易穿過 BBB 導致做惡夢。" }
             ]
         };
 
@@ -368,6 +234,7 @@
             balls = [];
             let segment = (canvas.width - 100) / 20;
             let pool = [];
+            // 根據全新題庫配置：10白、6藍、4紅，共20顆
             for(let i=0; i<10; i++) pool.push({color: "white", score: 100});
             for(let i=0; i<6; i++) pool.push({color: "blue", score: 150});
             for(let i=0; i<4; i++) pool.push({color: "red", score: 200});
@@ -410,15 +277,8 @@
         btnRight.addEventListener("mousedown", () => { touchRight = true; });
         btnRight.addEventListener("mouseup", () => { touchRight = false; });
 
-        function triggerDrop() {
-            if(claw.state === "IDLE") {
-                claw.state = "DROP";
-                playDropSound(); 
-            }
-        }
-
-        btnDrop.addEventListener("touchstart", (e) => { e.preventDefault(); triggerDrop(); });
-        btnDrop.addEventListener("click", () => { triggerDrop(); });
+        btnDrop.addEventListener("touchstart", (e) => { e.preventDefault(); if(claw.state === "IDLE") claw.state = "DROP"; });
+        btnDrop.addEventListener("click", () => { if(claw.state === "IDLE") claw.state = "DROP"; });
 
         function gameLoop() {
             if (gameState === "PLAYING") update();
@@ -430,7 +290,7 @@
             if (claw.state === "IDLE") {
                 if ((keys["ArrowLeft"] || touchLeft) && claw.x > 30) claw.x -= claw.speed;
                 if ((keys["ArrowRight"] || touchRight) && claw.x < canvas.width - 30) claw.x += claw.speed;
-                if (keys["Space"]) triggerDrop();
+                if (keys["Space"]) claw.state = "DROP";
             }
 
             if (claw.state === "DROP") {
@@ -446,14 +306,10 @@
                     if (dist < b.radius + 12) {
                         claw.state = "CATCH";
                         b.caught = true;
-                        playCatchSound(); 
                         break;
                     }
                 }
-                if (clawY >= canvas.height - 15 && claw.state === "DROP") {
-                    claw.state = "RETRACT";
-                    playMissSound(); 
-                }
+                if (clawY >= canvas.height - 15) claw.state = "RETRACT";
             }
 
             if (claw.state === "CATCH") {
