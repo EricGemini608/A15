@@ -5,34 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💊 藥理挑戰：高血壓與血管擴張劑 💊</title>
     <style>
+        /* 🚨 這是全新的封面遮罩，強迫圖片置中放大，絕對不會變灰色！ */
         #startScreen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: #1a252f;
             display: flex; justify-content: center; align-items: center;
-            z-index: 999;
-            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+            z-index: 9999; /* 確保在最上層 */
+            transition: opacity 0.4s ease;
         }
-        .cover-container {
-            position: relative;
-            width: 100%; max-width: 500px; height: 100vh; max-height: 850px;
-            /* 🎨 粉紅復古街機封面圖純文字內嵌，不需要另外上傳圖片檔 */
-            background-image: url('https://images.imagesoc.com/file/uploaded:IMG_0238.jpg-1cb9684b-1a53-46cc-8122-3c8c732efcb7');: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="100%" height="100%"><rect width="800" height="1100" fill="%235c3db5"/><path d="M 120,200 L 680,200 L 650,400 L 780,750 L 780,1050 L 20,1050 L 20,750 L 150,400 Z" fill="%23f9637c" stroke="%232c3e50" stroke-width="12" stroke-linejoin="round"/><path d="M 120,30 L 680,30 L 680,200 L 120,200 Z" fill="%23ffe66d" stroke="%232c3e50" stroke-width="12" stroke-linejoin="round"/><path d="M 230,150 L 180,60 L 280,110 L 320,40 L 380,120 L 460,50 L 490,130 L 580,60 L 560,140 L 640,90 L 590,160 L 670,160 L 570,180 L 210,180 Z" fill="%23f79ed3" stroke="%235c3db5" stroke-width="6"/><text x="400" y="125" font-family="monospace, sans-serif" font-size="44" font-weight="bold" fill="%235c3db5" text-anchor="middle">高壓與心血管擴張劑</text><path d="M 170,240 L 630,240 L 600,390 L 200,390 Z" fill="%231a252f" stroke="%232c3e50" stroke-width="12" stroke-linejoin="round"/><rect x="220" y="260" width="360" height="110" fill="none" stroke="%23ffe66d" stroke-width="5" rx="10"/><text x="400" y="520" font-family="monospace, Arial" font-size="110" font-weight="bold" fill="%23ab7fff" text-anchor="middle" style="letter-spacing:15px; filter: drop-shadow(5px 5px 0px %232c3e50);">START</text><circle cx="230" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="290" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="260" cy="710" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="260" cy="770" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="510" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="570" cy="740" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="540" cy="710" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><circle cx="540" cy="770" r="18" fill="%23ffe66d" stroke="%232c3e50" stroke-width="5"/><path d="M 30,900 L 770,900 L 770,1030 L 30,1030 Z" fill="%23e63946" stroke="%232c3e50" stroke-width="8"/><circle cx="100" cy="965" r="22" fill="%23ffe66d" stroke="%232c3e50" stroke-width="6"/><rect x="145" y="945" width="20" height="40" fill="%235c3db5" stroke="%232c3e50" stroke-width="4" rx="5"/><circle cx="700" cy="965" r="22" fill="%23ffe66d" stroke="%232c3e50" stroke-width="6"/><rect x="745" y="945" width="20" height="40" fill="%235c3db5" stroke="%232c3e50" stroke-width="4" rx="5"/><line x1="260" y1="560" x2="540" y2="560" stroke="%23ffe66d" stroke-width="4" stroke-dasharray="15,10"/><circle cx="280" cy="560" r="10" fill="%233498db"/><circle cx="320" cy="560" r="10" fill="%23e74c3c"/><circle cx="360" cy="560" r="10" fill="%23ffffff"/><circle cx="400" cy="560" r="10" fill="%233498db"/><circle cx="440" cy="560" r="10" fill="%23ffffff"/><circle cx="480" cy="560" r="10" fill="%23e74c3c"/><path d="M 400,245 L 400,280" stroke="%23ffe66d" stroke-width="5"/><path d="M 385,280 L 415,280 L 425,300 L 375,300 Z" fill="%23e67e22"/></svg>');
-            background-size: contain; background-repeat: no-repeat; background-position: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        #startScreen img {
+            width: 100%; max-width: 450px; height: auto; max-height: 95vh;
+            cursor: pointer; box-shadow: 0 0 30px rgba(0,0,0,0.6); border-radius: 10px;
         }
-        .start-hitbox {
-            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
-            width: 70%; height: 15%; cursor: pointer; border-radius: 15px;
-            background-color: rgba(155, 89, 182, 0); 
-            -webkit-tap-highlight-color: transparent; 
-        }
-        .start-hitbox:hover, .start-hitbox:active {
-            background-color: rgba(162, 102, 230, 0.15); 
-            box-shadow: 0 0 25px rgba(162, 102, 230, 0.6); 
-            transform: translate(-50%, -50%) scale(1.03); 
-        }
-        #startScreen.hidden { transform: translateY(-100vh); opacity: 0; pointer-events: none; }
+        #startScreen.hidden { opacity: 0; pointer-events: none; }
+        
         body {
             margin: 0; background-color: #1a252f;
             font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
@@ -69,7 +56,10 @@
     </style>
 </head>
 <body>
-    <div id="startScreen"><div class="cover-container"><div class="start-hitbox" onclick="startGame()"></div></div></div>
+    <div id="startScreen">
+        <img src="IMG_0238.jpg" alt="遊戲封面" onclick="startGame()" onerror="this.src='img_0238.jpg'">
+    </div>
+
     <h1>💊 高血壓與血管擴張劑答題機 💊</h1>
     <div class="info-panel">
         <div class="score-box">得分：<span id="scoreText">0</span> / 2700</div>
@@ -82,6 +72,7 @@
         <div class="touch-btn" id="btnRight">右移 ➡️</div>
     </div>
     <div class="rules">電腦玩家也可用【 ← 】【 → 】與【 空白鍵 】控制</div>
+    
     <div class="quiz-overlay" id="quizOverlay">
         <div class="quiz-container" id="quizContainer">
             <div class="quiz-header" id="quizHeader">題目難度</div>
@@ -105,7 +96,7 @@
             if (!audioCtx) return;
             let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = "sawtooth"; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, application || audioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
         function playCatchSound() {
@@ -122,7 +113,7 @@
             gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         }
-        function startGame() { initAudio(); const startScreen = document.getElementById("startScreen"); startScreen.classList.add("hidden"); setTimeout(() => { startScreen.style.display = "none"; }, 600); }
+        function startGame() { initAudio(); const startScreen = document.getElementById("startScreen"); startScreen.classList.add("hidden"); setTimeout(() => { startScreen.style.display = "none"; }, 400); }
 
         const quizBank = {
             white: [
