@@ -5,150 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💊 藥理挑戰：高血壓與血管擴張劑 💊</title>
     <style>
-        body {
-            margin: 0;
-            background-color: #1a252f;
-            font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            color: white;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
-        h1 { margin: 5px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 24px; text-align: center; }
-        .info-panel {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-        .score-box { background-color: #27ae60; padding: 5px 12px; border-radius: 10px; font-weight: bold; border: 2px solid #fff; }
-        .remain-box { background-color: #2980b9; padding: 5px 12px; border-radius: 10px; font-weight: bold; border: 2px solid #fff; }
-        
-        #gameCanvas {
-            background-color: #2c3e50;
-            border: 10px solid #f1c40f;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.7);
-            max-width: 95vw;
-            max-height: 60vh;
-        }
-
-        .controls-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-            width: 90%;
-            max-width: 400px;
-            justify-content: center;
-        }
-        .touch-btn {
-            background-color: #e67e22;
-            color: white;
-            border: 3px solid #d35400;
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px #ba4a00;
-            user-select: none;
-            flex: 1;
-            text-align: center;
-        }
-        .touch-btn:active {
-            box-shadow: 0 1px #ba4a00;
-            transform: translateY(3px);
-            background-color: #d35400;
-        }
-        .action-btn {
-            background-color: #e74c3c;
-            border-color: #c0392b;
-            box-shadow: 0 4px #962d22;
-        }
-        .action-btn:active {
-            background-color: #c0392b;
-            box-shadow: 0 1px #962d22;
-        }
-
-        .quiz-overlay {
+        /* 🕹️ 封面畫面設定 */
+        #startScreen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
+            background-color: #1a252f;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 999;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
         }
-        .quiz-container {
-            background-color: #ffffff;
-            color: #333;
-            padding: 20px;
-            border-radius: 20px;
-            max-width: 450px;
-            width: 85%;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
-            border-top: 12px solid #ccc; 
-            max-height: 85vh;
-            overflow-y: auto;
+        .cover-container {
+            position: relative;
+            width: 100%; max-width: 500px; height: 100vh; max-height: 850px;
+            background-image: url('IMG_0238.jpg'); /* 🖼️ 讀取妳上傳的封面圖 */
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
-        .quiz-header {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            padding: 4px 10px;
-            border-radius: 5px;
-            display: inline-block;
+        /* 🖱️ 隱形點擊按鈕（對準畫面中的 START 鍵位置） */
+        .start-hitbox {
+            position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+            width: 60%; height: 12%; cursor: pointer; border-radius: 15px;
+            background-color: rgba(0, 0, 0, 0); 
+            -webkit-tap-highlight-color: transparent; 
         }
+        .start-hitbox:hover, .start-hitbox:active {
+            background-color: rgba(162, 102, 230, 0.15); 
+            box-shadow: 0 0 20px rgba(162, 102, 230, 0.6); 
+            transform: translate(-50%, -50%) scale(1.03); 
+        }
+        #startScreen.hidden { transform: translateY(-100vh); opacity: 0; pointer-events: none; }
+
+        /* 🎮 遊戲主體樣式 */
+        body {
+            margin: 0; background-color: #1a252f;
+            font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; color: white; overflow: hidden; touch-action: manipulation;
+        }
+        h1 { margin: 5px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 24px; text-align: center; }
+        .info-panel { display: flex; gap: 15px; margin-bottom: 5px; font-size: 16px; }
+        .score-box { background-color: #27ae60; padding: 5px 12px; border-radius: 10px; font-weight: bold; border: 2px solid #fff; }
+        .remain-box { background-color: #2980b9; padding: 5px 12px; border-radius: 10px; font-weight: bold; border: 2px solid #fff; }
+        #gameCanvas { background-color: #2c3e50; border: 10px solid #f1c40f; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.7); max-width: 95vw; max-height: 60vh; }
+        .controls-container { display: flex; gap: 15px; margin-top: 10px; width: 90%; max-width: 400px; justify-content: center; }
+        .touch-btn {
+            background-color: #e67e22; color: white; border: 3px solid #d35400; border-radius: 12px;
+            padding: 12px 20px; font-size: 18px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px #ba4a00; user-select: none; flex: 1; text-align: center;
+        }
+        .touch-btn:active { box-shadow: 0 1px #ba4a00; transform: translateY(3px); background-color: #d35400; }
+        .action-btn { background-color: #e74c3c; border-color: #c0392b; box-shadow: 0 4px #962d22; }
+        .action-btn:active { background-color: #c0392b; box-shadow: 0 1px #962d22; }
+        .quiz-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .quiz-container { background-color: #ffffff; color: #333; padding: 20px; border-radius: 20px; max-width: 450px; width: 85%; box-shadow: 0 5px 30px rgba(0,0,0,0.5); border-top: 12px solid #ccc; max-height: 85vh; overflow-y: auto; }
+        .quiz-header { font-size: 14px; font-weight: bold; margin-bottom: 5px; padding: 4px 10px; border-radius: 5px; display: inline-block; }
         .quiz-question { font-size: 17px; font-weight: bold; margin: 10px 0; line-height: 1.4; color: #2c3e50; }
-        .option-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 6px 0;
-            font-size: 15px;
-            text-align: left;
-            background-color: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
-            cursor: pointer;
-            color: #495057;
-        }
-        
+        .option-btn { display: block; width: 100%; padding: 10px; margin: 6px 0; font-size: 15px; text-align: left; background-color: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; cursor: pointer; color: #495057; }
         .result-box { margin-top: 10px; padding: 12px; border-radius: 10px; display: none; line-height: 1.5; font-size: 14px; }
         .result-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .result-wrong { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .next-btn {
-            display: none; width: 100%; padding: 12px; margin-top: 12px;
-            font-size: 16px; background-color: #2ecc71; color: white;
-            border: none; border-radius: 10px; cursor: pointer; font-weight: bold;
-        }
-        
-        .game-over-panel {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            color: #333;
-            padding: 30px;
-            border-radius: 25px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            display: none;
-            z-index: 200;
-            width: 75%;
-            max-width: 350px;
-        }
+        .next-btn { display: none; width: 100%; padding: 12px; margin-top: 12px; font-size: 16px; background-color: #2ecc71; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .game-over-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; color: #333; padding: 30px; border-radius: 25px; text-align: center; box-shadow: 0 0 40px rgba(0,0,0,0.8); display: none; z-index: 200; width: 75%; max-width: 350px; }
         .final-score { font-size: 40px; color: #e74c3c; font-weight: bold; margin: 15px 0; }
         .final-msg { font-size: 18px; font-weight: bold; line-height: 1.5; color: #2c3e50; }
-
         .rules { font-size: 12px; color: #bdc3c7; margin-top: 5px; text-align: center; }
     </style>
 </head>
 <body>
+    <div id="startScreen"><div class="cover-container"><div class="start-hitbox" onclick="startGame()"></div></div></div>
 
     <h1>💊 高血壓與血管擴張劑答題機 💊</h1>
     <div class="info-panel">
@@ -185,10 +109,10 @@
 
     <script>
         // ==========================================
-        // 📚 全新小組討論題庫（1-10簡單、11-16普通、17-20困難）
+        // 📚 藥理小組討論題庫
         // ==========================================
         const quizBank = {
-            white: [ // 1-10 題
+            white: [
                 { q: "有關抗高血壓藥物 Sodium Nitroprusside 的敘述下列何者錯誤？", opts: ["副作用有姿位性低血壓、反射性心跳過速", "嚴重低血壓危象的急救", "這個藥物對光敏感，宜避光使用"], ans: 1, note: "解析：應該是高血壓危害（危象）的急救。" },
                 { q: "有關抗高血壓藥物 Hydralazine 的敘述下列何者錯誤？", opts: ["高劑量可能引起可逆性類紅斑性狼瘡症狀", "因擴張血管使得反射性心跳增加", "常與利尿劑或交感神經Alpha接受器阻斷劑併用"], ans: 2, note: "解析：常與利尿劑或交感神經Beta（β）接受器阻斷劑併用。" },
                 { q: "有關抗高血壓藥物 Minoxidil 的敘述下列何者正確？", opts: ["會活化血管平滑肌細胞的鉀離子通道，使細胞內鉀離子外流，使膜電位過極化，降低血管興奮性", "本產品對光過敏，宜避光使用", "會造成少毛症"], ans: 0, note: "解析：(B)選項對光過敏且宜避光使用的是 Sodium Nitroprusside；(C)會造成多毛症。" },
@@ -200,7 +124,7 @@
                 { q: "有關抗高血壓藥物-血管擴張劑的敘述下列何者錯誤？", opts: ["直接作用於血管骨骼肌，使血管擴張", "部分藥物擴張小動脈血管的作用會使周邊阻力降低，產生降血壓效果", "部分擴張小靜脈血管，藉引起靜脈回流與減少心輸出量來降血壓"], ans: 0, note: "解析：是直接作用於血管平滑肌，而非骨骼肌。" },
                 { q: "有關抗高血壓藥物-血管擴張劑的敘述下列何者正確？", opts: ["目前已被製成外用製劑，用於改善落髮與禿頭", "會造成多毛症", "以上皆是"], ans: 2, note: "解析：以上皆是。例如 Minoxidil 常做成生髮水治療落髮。" }
             ],
-            blue: [ // 11-16 題
+            blue: [
                 { q: "請問下列哪一藥物並非血管緊縮素轉換酶抑制劑（ACEI）？", opts: ["Captopril", "Lisinopril", "Irbesartan"], ans: 2, note: "解析：Irbesartan 是血管緊縮素受體阻斷劑（ARBs）。" },
                 { q: "請問下列何者藥物是抗高血壓第一線藥物中的 β 受體阻斷劑？", opts: ["Metoprolol", "Atenolol", "以上皆是"], ans: 2, note: "解析：以上皆是。Metoprolol 與 Atenolol 皆屬於第一線的 β 阻斷劑。" },
                 { q: "請問下列何者藥物是抗高血壓第一線藥物中的鈣離子通道阻斷劑（CCBs）？", opts: ["Nifedipine", "Amlodipine", "以上皆是"], ans: 2, note: "解析：以上皆是。Nifedipine、Amlodipine 均為臨床常用 CCB 藥物。" },
@@ -208,7 +132,7 @@
                 { q: "有關抗高血壓第一線藥物中的 β 受體阻斷劑的敘述，下列何者正確？", opts: ["降低心跳速率", "抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。β 阻斷劑可減慢心率並抑制 Renin 的釋放。" },
                 { q: "有關抗高血壓第一線藥物中的利尿劑的敘述下列何者錯誤？", opts: ["促進鈉、水排出，使血量及心輸出量降低", "離子跟水分流失", "會抑制腎素（renin）分泌"], ans: 2, note: "解析：利尿劑排出鈉水會使血壓下降，反而反射性刺激腎素分泌；會抑制腎素分泌的是 β 受體阻斷劑。" }
             ],
-            red: [ // 17-20 題
+            red: [
                 { q: "有關抗高血壓第一線藥物中的 β 受體阻斷劑的敘述下列何者正確？", opts: ["會導致氣管痙攣", "會導致心搏過快", "手足會發熱"], ans: 0, note: "解析：(A)正確（非選擇性 β 阻斷劑易誘發氣喘）；(B)會導致心搏過慢；(C)因周邊血管收縮會導致手足冰冷。" },
                 { q: "有關抗高血壓第一線藥物中的血管緊縮素轉換酶抑制劑（ACEI）的敘述下列何者錯誤？", opts: ["抑制血管緊縮素轉換酶使血管緊縮素II無法合成", "會咳嗽、口乾、味覺降低", "會造成氣管痙攣"], ans: 2, note: "解析：會造成氣管痙攣的是抗高血壓第一線藥物中 β 受體阻斷劑。ACEI 的代表副作用是乾咳。" },
                 { q: "有關抗高血壓第一線藥物的分類與機轉的配對，下列何者正確？", opts: ["利尿劑 - 促進鈉、水排出，使血量及心輸出量降低", "β 受體阻斷劑 - 抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。" },
@@ -234,7 +158,6 @@
             balls = [];
             let segment = (canvas.width - 100) / 20;
             let pool = [];
-            // 根據全新題庫配置：10白、6藍、4紅，共20顆
             for(let i=0; i<10; i++) pool.push({color: "white", score: 100});
             for(let i=0; i<6; i++) pool.push({color: "blue", score: 150});
             for(let i=0; i<4; i++) pool.push({color: "red", score: 200});
@@ -251,6 +174,13 @@
                     caught: false
                 });
             }
+        }
+
+        // 🎬 關閉封面、開始遊戲
+        function startGame() {
+            const startScreen = document.getElementById("startScreen");
+            startScreen.classList.add("hidden");
+            setTimeout(() => { startScreen.style.display = "none"; }, 600);
         }
 
         let keys = {};
@@ -277,8 +207,9 @@
         btnRight.addEventListener("mousedown", () => { touchRight = true; });
         btnRight.addEventListener("mouseup", () => { touchRight = false; });
 
-        btnDrop.addEventListener("touchstart", (e) => { e.preventDefault(); if(claw.state === "IDLE") claw.state = "DROP"; });
-        btnDrop.addEventListener("click", () => { if(claw.state === "IDLE") claw.state = "DROP"; });
+        function triggerDrop() { if(claw.state === "IDLE") claw.state = "DROP"; }
+        btnDrop.addEventListener("touchstart", (e) => { e.preventDefault(); triggerDrop(); });
+        btnDrop.addEventListener("click", () => { triggerDrop(); });
 
         function gameLoop() {
             if (gameState === "PLAYING") update();
@@ -290,7 +221,7 @@
             if (claw.state === "IDLE") {
                 if ((keys["ArrowLeft"] || touchLeft) && claw.x > 30) claw.x -= claw.speed;
                 if ((keys["ArrowRight"] || touchRight) && claw.x < canvas.width - 30) claw.x += claw.speed;
-                if (keys["Space"]) claw.state = "DROP";
+                if (keys["Space"]) triggerDrop();
             }
 
             if (claw.state === "DROP") {
@@ -309,7 +240,7 @@
                         break;
                     }
                 }
-                if (clawY >= canvas.height - 15) claw.state = "RETRACT";
+                if (clawY >= canvas.height - 15 && claw.state === "DROP") claw.state = "RETRACT";
             }
 
             if (claw.state === "CATCH") {
