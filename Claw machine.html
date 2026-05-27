@@ -39,29 +39,30 @@
         .final-msg { font-size: 18px; font-weight: bold; line-height: 1.5; color: #2c3e50; }
         .rules { font-size: 12px; color: #bdc3c7; margin-top: 5px; text-align: center; }
 
-        /* ====== 核心修正：讓你的圖全螢幕蓋在最上面做為「開始畫面」 ====== */
+        /* ====== 【核心修正】開始遊戲畫面：滿版顯示你畫的街機圖 ====== */
         .start-overlay {
             position: fixed; 
             top: 0; left: 0; 
             width: 100vw; height: 100vh;
-            background-color: #1a252f;
-            background-image: url('img_0238.jpg'); /* 👈 帶入你手繪的街機圖 */
-            background-size: contain; /* 完整縮放不變形 */
+            background-color: #111111; /* 如果圖片讀取失敗，會顯示黑色背景 */
+            background-image: url('img_0238.jpg'); /* 👈 這裡讀取你畫的圖 */
+            background-size: contain; /* 讓整張圖完整顯示，不被切到 */
             background-repeat: no-repeat;
             background-position: center;
             display: flex; align-items: center; justify-content: center;
-            z-index: 9999; /* 確保它絕對在最上層，擋住後面的遊戲 */
+            z-index: 9999; /* 確保它在最前面，點擊前擋住後面的遊戲機台 */
             transition: opacity 0.4s ease;
         }
-        /* 在你畫的 START 像素字體正上方放一個隱形按鈕 */
+        /* 疊在你畫的 START 像素字體正上方的按鈕 */
         .start-invisible-btn {
-            width: 280px; height: 110px;
-            background: transparent; border: none; outline: none;
+            width: 250px; height: 90px;
+            background: transparent; 
+            border: 2px dashed rgba(255, 255, 255, 0.4); /* 👈 暫時加個白色虛線框，方便你確認按鈕位置是否對準你的 START */
             cursor: pointer; border-radius: 20px;
-            background-color: rgba(255, 255, 255, 0.01); /* 隱形但點得到 */
+            outline: none;
         }
         .start-invisible-btn:active {
-            background-color: rgba(255, 255, 255, 0.15); /* 點擊時有微弱亮光反饋 */
+            background-color: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
@@ -132,7 +133,7 @@
             draw(); 
         };
 
-        // 按下你畫的 START 像素字體後，會把遮罩關掉，進入遊戲畫面
+        // 點擊你畫的 START 之後，開始畫面會淡出，露出後面的遊戲
         function startGame() {
             initAudio(); 
             document.getElementById("startOverlay").style.opacity = "0"; 
