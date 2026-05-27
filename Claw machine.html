@@ -25,7 +25,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; color: white; overflow: hidden; touch-action: manipulation;
         }
-        h1 { margin: 5px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 24px; text-align: center; }
+        h1 { margin: 5px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 22px; text-align: center; }
         .info-panel { display: flex; gap: 15px; margin-bottom: 5px; font-size: 16px; }
         .score-box { background-color: #27ae60; padding: 5px 12px; border-radius: 10px; font-weight: bold; border: 2px solid #fff; }
         .remain-box { background-color: #2980b9; padding: 5px 12px; border-radius: 10px; font-weight: bold; border: 2px solid #fff; }
@@ -59,7 +59,7 @@
         <img src="生の.jpg" alt="遊戲封面" onclick="startGame()" onerror="this.src='生的.png'">
     </div>
 
-    <h1>💊 抗高血壓藥物與血管擴張劑答題機 💊</h1>
+    <h1>💊 藥理挑戰：抗高血壓藥物與血管擴張劑 💊</h1>
     <div class="info-panel">
         <div class="score-box">得分：<span id="scoreText">0</span> / 3100</div>
         <div class="remain-box">剩餘：<span id="remainText">20</span> 顆</div>
@@ -114,7 +114,6 @@
         }
         function startGame() { initAudio(); const startScreen = document.getElementById("startScreen"); startScreen.classList.add("hidden"); setTimeout(() => { startScreen.style.display = "none"; }, 400); }
 
-        // 🚨 這裡已經替換成妳提供的 20 題完整高血壓與血管擴張劑藥理學題目庫
         const quizBank = {
             white: [
                 { q: "請問有關抗高血壓藥物 Sodium Nitroprusside 的敘述下列何者錯誤？", opts: ["副作用有姿位性低血壓、反射性心跳過速", "嚴重低血壓危象的急救", "這個藥物對光敏感，宜避光使用"], ans: 1, note: "解析：應該是高血壓危害（危象）的急救。" },
