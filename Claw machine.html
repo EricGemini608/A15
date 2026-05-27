@@ -39,30 +39,31 @@
         .final-msg { font-size: 18px; font-weight: bold; line-height: 1.5; color: #2c3e50; }
         .rules { font-size: 12px; color: #bdc3c7; margin-top: 5px; text-align: center; }
 
-        /* ====== 【核心修正】開始遊戲畫面：滿版顯示你畫的街機圖 ====== */
+        /* ====== 開始遊戲畫面：滿版顯示手繪街機圖 ====== */
         .start-overlay {
             position: fixed; 
             top: 0; left: 0; 
             width: 100vw; height: 100vh;
-            background-color: #111111; /* 如果圖片讀取失敗，會顯示黑色背景 */
-            background-image: url('img_0238.jpg'); /* 👈 這裡讀取你畫的圖 */
-            background-size: contain; /* 讓整張圖完整顯示，不被切到 */
+            background-color: #1a252f;
+            background-image: url('img_0238.jpg'); /* 確保圖片全小寫 */
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             display: flex; align-items: center; justify-content: center;
-            z-index: 9999; /* 確保它在最前面，點擊前擋住後面的遊戲機台 */
+            z-index: 9999; 
             transition: opacity 0.4s ease;
         }
-        /* 疊在你畫的 START 像素字體正上方的按鈕 */
+        /* 完全隱形的點擊按鈕，精準覆蓋在圖中的 START 上方 */
         .start-invisible-btn {
-            width: 250px; height: 90px;
+            width: 260px; height: 100px;
             background: transparent; 
-            border: 2px dashed rgba(255, 255, 255, 0.4); /* 👈 暫時加個白色虛線框，方便你確認按鈕位置是否對準你的 START */
-            cursor: pointer; border-radius: 20px;
+            border: none; /* 已經拿掉虛線，完全隱形更漂亮 */
             outline: none;
+            cursor: pointer; 
+            border-radius: 20px;
         }
         .start-invisible-btn:active {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1); /* 點擊時有微微的按壓感 */
         }
     </style>
 </head>
@@ -133,7 +134,6 @@
             draw(); 
         };
 
-        // 點擊你畫的 START 之後，開始畫面會淡出，露出後面的遊戲
         function startGame() {
             initAudio(); 
             document.getElementById("startOverlay").style.opacity = "0"; 
