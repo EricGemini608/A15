@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💊 藥理挑戰：抗高血壓藥物與血管擴張劑 💊</title>
     <style>
+        /* 新增：開始遊戲遮罩畫面 */
+        #startScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #1a252f;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        /* 縮放手繪封面圖，保持完美比例 */
+        #startScreen img {
+            width: 85%; max-width: 380px; height: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6); border-radius: 15px;
+            margin-bottom: 25px; border: 3px solid #f1c40f;
+        }
+        /* 開始按鈕樣式 */
+        .start-btn {
+            background-color: #2ecc71; color: white; border: 3px solid #27ae60;
+            border-radius: 12px; padding: 12px 35px; font-size: 20px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 4px #219653; transition: all 0.1s;
+        }
+        .start-btn:active { box-shadow: 0 1px #219653; transform: translateY(3px); background-color: #27ae60; }
+        /* 隱藏動畫特效 */
+        #startScreen.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
+        
         body {
             margin: 0; background-color: #1a252f;
             font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
@@ -42,6 +67,11 @@
 </head>
 <body>
 
+    <div id="startScreen">
+        <img src="img_0238.jpg" alt="藥理挑戰封面" onclick="startGame()">
+        <button class="start-btn" onclick="startGame()">START GAME 🚀</button>
+    </div>
+
     <h1>💊 抗高血壓藥物與血管擴張劑答題機 💊</h1>
     <div class="info-panel">
         <div class="score-box">得分：<span id="scoreText">0</span> / 2700</div>
@@ -78,7 +108,7 @@
             if (!audioCtx) return;
             let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = "sawtooth"; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.15, applicationCache.currentTime ? audioCtx.currentTime : audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
         function playCatchSound() {
@@ -96,9 +126,17 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         }
 
+        // 新增：按下 START 的處理函式，解鎖音效並淡出封面
+        function startGame() {
+            initAudio();
+            const startScreen = document.getElementById("startScreen");
+            startScreen.classList.add("hidden");
+            setTimeout(() => {
+                startScreen.style.display = "none";
+            }, 400); // 400毫秒淡出動畫結束後完全移除
+        }
+
         window.onload = function() {
-            document.body.addEventListener('click', initAudio, { once: true });
-            document.body.addEventListener('touchstart', initAudio, { once: true });
             initBalls(); 
             gameLoop();
         };
@@ -157,7 +195,7 @@
         btnRight.addEventListener("touchstart", (e) => { e.preventDefault(); touchRight = true; }); btnRight.addEventListener("touchend", () => { touchRight = false; });
         btnRight.addEventListener("mousedown", () => { touchRight = true; }); btnRight.addEventListener("mouseup", () => { touchRight = false; });
 
-        function triggerDrop() { if(claw.state === "IDLE") { claw.state = "DROP"; playDropSound(); } }
+        function triggerDrop() { if(claw.state === "IDLE" && document.getElementById("startScreen").style.display === "none") { claw.state = "DROP"; playDropSound(); } }
         btnDrop.addEventListener("touchstart", (e) => { e.preventDefault(); triggerDrop(); }); btnDrop.addEventListener("click", () => { triggerDrop(); });
 
         function gameLoop() { if (gameState === "PLAYING") update(); draw(); requestAnimationFrame(gameLoop); }
