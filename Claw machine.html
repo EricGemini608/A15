@@ -44,7 +44,7 @@
 
     <h1>💊 高血壓與血管擴張劑答題機 💊</h1>
     <div class="info-panel">
-        <div class="score-box">得分：<span id="scoreText">0</span> / 3100</div>
+        <div class="score-box">得分：<span id="scoreText">0</span> / 2700</div>
         <div class="remain-box">剩餘：<span id="remainText">20</span> 顆</div>
     </div>
     <canvas id="gameCanvas" width="450" height="500"></canvas>
@@ -96,9 +96,7 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         }
 
-        // 新增：網頁載入完成後直接啟動遊戲與音效環境
         window.onload = function() {
-            // 讓玩家點擊網頁任何地方時自動解鎖音效
             document.body.addEventListener('click', initAudio, { once: true });
             document.body.addEventListener('touchstart', initAudio, { once: true });
             initBalls(); 
@@ -242,9 +240,9 @@
             if (totalBalls <= 0) {
                 gameState = "GAME_OVER"; const panel = document.getElementById("gameOverPanel"); const scoreDisplay = document.getElementById("finalScoreDisplay"); const msgDisplay = document.getElementById("finalMsgDisplay");
                 scoreDisplay.innerText = totalScore + " 分";
-                if (totalScore < 2400) { msgDisplay.innerText = "警告!警告!該認真修藥理學囉~"; msgDisplay.style.color = "#c0392b"; }
-                else if (totalScore < 2700) { msgDisplay.innerText = "有成為學霸的潛質喔 但還可以更高分啦!"; msgDisplay.style.color = "#2980b9"; }
-                else if (totalScore < 3100) { msgDisplay.innerText = "哇！差一點就滿分了！有空可以再向滿分挑戰喔！"; msgDisplay.style.color = "#27ae60"; }
+                if (totalScore < 1800) { msgDisplay.innerText = "警告!警告!該認真修藥理學囉~"; msgDisplay.style.color = "#c0392b"; }
+                else if (totalScore < 2300) { msgDisplay.innerText = "有成為學霸的潛質喔 但還可以更高分啦!"; msgDisplay.style.color = "#2980b9"; }
+                else if (totalScore < 2700) { msgDisplay.innerText = "哇！差一點就滿分了！有空可以再向滿分挑戰喔！"; msgDisplay.style.color = "#27ae60"; }
                 else { msgDisplay.innerText = "你太棒啦 ! ! 藥理學歐趴 ! ! !"; msgDisplay.style.color = "#d35400"; }
                 panel.style.display = "block"; return true;
             }
@@ -264,7 +262,7 @@
             ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(claw.x, claw.y); ctx.lineTo(claw.x, claw.y + claw.ropeLength); ctx.stroke();
             let curY = claw.y + claw.ropeLength; ctx.fillStyle = "#f39c12"; ctx.fillRect(claw.x - 15, curY, 30, 12); ctx.strokeStyle = "#d35400"; ctx.lineWidth = 4;
             ctx.beginPath(); ctx.moveTo(claw.x - 12, curY + 12); ctx.lineTo(claw.x - 22, curY + 30); ctx.lineTo(claw.x - 8, curY + 36); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(claw.x + 12, curY + 12); ctx.lineTo(claw.x + 22, curY + 30); ctx.lineTo(claw.x + 8, curY + 36); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(claw.x + 12, curY + 12); ctx.lineTo(claw.x + 22, curY + 30); ctx.lineTo(claw.x + 8, curY + 36); stroke();
         }
     </script>
 </body>
