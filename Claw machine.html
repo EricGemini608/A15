@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💊 藥理挑戰：高血壓與血管擴張劑 💊</title>
+    <title>💊 藥理挑戰：抗高血壓藥物與血管擴張劑 💊</title>
     <style>
         #startScreen {
             position: fixed;
@@ -56,7 +56,7 @@
 </head>
 <body>
     <div id="startScreen">
-        <img src="生の.jpg" alt="遊戲封面" onclick="startGame()" onerror="this.src='生的.png'">
+        <img src="生の.jpg" alt="點擊這裡開始遊戲" onclick="startGame()" onerror="this.src='生の.png'; this.alt='點擊這裡開始遊戲'">
     </div>
 
     <h1>💊 藥理挑戰：抗高血壓藥物與血管擴張劑 💊</h1>
@@ -102,7 +102,7 @@
             if (!audioCtx) return;
             let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination);
             osc.type = "sine"; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.08); 
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, applicationCache.currentTime + 0.25);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25); // 修正拼字錯誤
             osc.start(); osc.stop(audioCtx.currentTime + 0.25);
         }
         function playMissSound() {
@@ -129,7 +129,7 @@
             ],
             blue: [
                 { q: "請問下列哪一藥物並非血管緊縮素轉換酶抑制劑（ACEI)？", opts: ["Captopril", "Lisinopril", "lrbesartan"], ans: 2, note: "解析：Irbesartan字尾為-sartan，是血管緊縮素受體阻斷劑（ARBs）。" },
-                { q: "請問下列何者藥物是抗高血壓第一線藥物中的B受體阻斷劑？", opts: ["Metoprolol", "Atenolol", "以上皆是"], ans: 2, note: "解析：以上皆是。字尾-olol者多為Beta阻斷劑。" },
+                { q: "請問下列何者藥物是抗高血壓第一線藥物中的B受體阻斷劑？", opts: ["Metoprolol", "Atenolol", "以上皆是"], ans: 2, note: "ニング解析：以上皆是。字尾-olol者多為Beta阻斷劑。" },
                 { q: "請問下列何者藥物是抗高血壓第一線藥物中的鈣離子通道阻斷劑（CCBs）？", opts: ["Nifedipine", "Amlodipine", "以上皆是"], ans: 2, note: "解析：以上皆是。字尾-dipine為二氫吡啶類CCB血管選擇性降壓藥。" },
                 { q: "請問有關抗高血壓第一線藥物中的利尿劑及副作用的配對，下列何者錯誤？", opts: ["Chlorothiazide-高尿酸血症", "Furosemide-高尿酸血症", "Spironolactone-高尿酸血症"], ans: 2, note: "解析：Spironolactone是保鉀利尿劑，特異副作用是抗雄性素導致的男性女乳症。" },
                 { q: "請問有關抗高血壓第一線藥物中的B受體阻斷劑的敘述，下列何者正確？", opts: ["降低心跳速率", "抑制腎素（renin）分泌", "以上皆是"], ans: 2, note: "解析：以上皆是。阻斷Beta1受體可減慢心速並抑制腎臟釋放腎素。" },
@@ -152,130 +152,4 @@
             for(let i=0; i<10; i++) pool.push({color: "white", score: 100});
             for(let i=0; i<6; i++) pool.push({color: "blue", score: 150});
             for(let i=0; i<4; i++) pool.push({color: "red", score: 200});
-            pool.sort(() => Math.random() - 0.5);
-            for(let i=0; i<20; i++) {
-                balls.push({ color: pool[i].color, score: pool[i].score, radius: 17, x: 50 + (i * segment) + (Math.random() * 8), y: 465, caught: false });
-            }
-        }
-
-        let keys = {}; let touchLeft = false; let touchRight = false;
-        window.addEventListener("keydown", (e) => { if (e.code === "Space" && gameState === "PLAYING") e.preventDefault(); keys[e.code] = true; });
-        window.addEventListener("keyup", (e) => { keys[e.code] = false; });
-
-        const btnLeft = document.getElementById("btnLeft"); const btnRight = document.getElementById("btnRight"); const btnDrop = document.getElementById("btnDrop");
-        btnLeft.addEventListener("touchstart", (e) => { e.preventDefault(); touchLeft = true; }); btnLeft.addEventListener("touchend", () => { touchLeft = false; });
-        btnLeft.addEventListener("mousedown", () => { touchLeft = true; }); btnLeft.addEventListener("mouseup", () => { touchLeft = false; });
-        btnRight.addEventListener("touchstart", (e) => { e.preventDefault(); touchRight = true; }); btnRight.addEventListener("touchend", () => { touchRight = false; });
-        btnRight.addEventListener("mousedown", () => { touchRight = true; }); btnRight.addEventListener("mouseup", () => { touchRight = false; });
-
-        function triggerDrop() { if(claw.state === "IDLE") { claw.state = "DROP"; playDropSound(); } }
-        btnDrop.addEventListener("touchstart", (e) => { e.preventDefault(); triggerDrop(); }); btnDrop.addEventListener("click", () => { triggerDrop(); });
-
-        function gameLoop() { if (gameState === "PLAYING") update(); draw(); requestAnimationFrame(gameLoop); }
-
-        function update() {
-            if (claw.state === "IDLE") {
-                if ((keys["ArrowLeft"] || touchLeft) && claw.x > 30) claw.x -= claw.speed;
-                if ((keys["ArrowRight"] || touchRight) && claw.x < canvas.width - 30) claw.x += claw.speed;
-                if (keys["Space"]) triggerDrop();
-            }
-            if (claw.state === "DROP") {
-                claw.ropeLength += 5; let clawY = claw.y + claw.ropeLength + claw.height;
-                for (let b of balls) {
-                    if (b.caught) continue;
-                    let dx = claw.x - b.x; let dy = clawY - b.y; let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < b.radius + 12) { claw.state = "CATCH"; b.caught = true; playCatchSound(); break; }
-                }
-                if (clawY >= canvas.height - 15 && claw.state === "DROP") { claw.state = "RETRACT"; playMissSound(); }
-            }
-            if (claw.state === "CATCH") {
-                claw.ropeLength -= 5;
-                for (let b of balls) { if (b.caught) { b.x = claw.x; b.y = claw.y + claw.ropeLength + claw.height; } }
-                if (claw.ropeLength <= 0) { claw.ropeLength = 0; claw.state = "IDLE"; triggerQuiz(); }
-            }
-            if (claw.state === "RETRACT") { claw.ropeLength -= 5; if (claw.ropeLength <= 0) { claw.ropeLength = 0; claw.state = "IDLE"; } }
-        }
-
-        function triggerQuiz() {
-            let caughtBallIndex = balls.findIndex(b => b.caught); if (caughtBallIndex === -1) return;
-            let ball = balls[caughtBallIndex]; let list = quizBank[ball.color];
-            if (list.length === 0) {
-                totalScore += ball.score; document.getElementById("scoreText").innerText = totalScore;
-                balls.splice(caughtBallIndex, 1); totalBalls--; document.getElementById("remainText").innerText = totalBalls;
-                checkGameOver(); return;
-            }
-            let randIdx = Math.floor(Math.random() * list.length); let quiz = list.splice(randIdx, 1)[0];
-            currentQuiz = { quizData: quiz, ballColor: ball.color, ballScore: ball.score, ballIndex: caughtBallIndex };
-            gameState = "QUIZ_POPUP"; showQuizModal();
-        }
-
-        function showQuizModal() {
-            const overlay = document.getElementById("quizOverlay"); const container = document.getElementById("quizContainer");
-            const header = document.getElementById("quizHeader"); const question = document.getElementById("quizQuestion");
-            const optionsBox = document.getElementById("optionsBox"); const resultBox = document.getElementById("resultBox");
-            const nextBtn = document.getElementById("nextBtn");
-            resultBox.style.display = "none"; nextBtn.style.display = "none"; optionsBox.innerHTML = "";
-
-            if (currentQuiz.ballColor === "red") {
-                container.style.borderTopColor = "#e74c3c"; header.style.backgroundColor = "#fce4d6"; header.style.color = "#c00000"; header.innerText = `🔴 困難題：價值 ${currentQuiz.ballScore} 分！`;
-            } else if (currentQuiz.ballColor === "blue") {
-                container.style.borderTopColor = "#3498db"; header.style.backgroundColor = "#ddebf7"; header.style.color = "#1f4e78"; header.innerText = `🔵 普通題：價值 ${currentQuiz.ballScore} 分！`;
-            } else {
-                container.style.borderTopColor = "#bdc3c7"; header.style.backgroundColor = "#f2f2f2"; header.style.color = "#595959"; header.innerText = `⚪ 簡單題：價值 ${currentQuiz.ballScore} 分！`;
-            }
-            question.innerHTML = currentQuiz.quizData.q;
-            currentQuiz.quizData.opts.forEach((opt, idx) => {
-                let btn = document.createElement("button"); btn.className = "option-btn"; btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
-                btn.onclick = () => selectOption(idx); optionsBox.appendChild(btn);
-            });
-            overlay.style.display = "flex";
-        }
-
-        function selectOption(idx) {
-            const btns = document.querySelectorAll(".option-btn"); btns.forEach(b => b.disabled = true);
-            const resultBox = document.getElementById("resultBox"); const nextBtn = document.getElementById("nextBtn"); const correctAns = currentQuiz.quizData.ans;
-            if (idx === correctAns) {
-                totalScore += currentQuiz.ballScore; document.getElementById("scoreText").innerText = totalScore;
-                resultBox.className = "result-box result-success"; resultBox.innerHTML = `<strong>🎉 答對了！</strong> +${currentQuiz.ballScore}分！<br>${currentQuiz.quizData.note}`;
-                btns[idx].style.backgroundColor = "#2ecc71"; btns[idx].style.color = "white";
-            } else {
-                resultBox.className = "result-box result-wrong"; resultBox.innerHTML = `<strong>❌ 答錯囉！</strong><br>${currentQuiz.quizData.note}`;
-                btns[idx].style.backgroundColor = "#e74c3c"; btns[idx].style.color = "white"; btns[correctAns].style.backgroundColor = "#2ecc71"; btns[correctAns].style.color = "white";
-            }
-            resultBox.style.display = "block"; nextBtn.style.display = "block";
-        }
-
-        function closeQuiz() { balls.splice(currentQuiz.ballIndex, 1); totalBalls--; document.getElementById("remainText").innerText = totalBalls; document.getElementById("quizOverlay").style.display = "none"; if (!checkGameOver()) gameState = "PLAYING"; }
-
-        function checkGameOver() {
-            if (totalBalls <= 0) {
-                gameState = "GAME_OVER"; const panel = document.getElementById("gameOverPanel"); const scoreDisplay = document.getElementById("finalScoreDisplay"); const msgDisplay = document.getElementById("finalMsgDisplay");
-                scoreDisplay.innerText = totalScore + " 分";
-                if (totalScore < 2400) { msgDisplay.innerText = "警告!警告!該認真修藥理學囉~"; msgDisplay.style.color = "#c0392b"; }
-                else if (totalScore < 2700) { msgDisplay.innerText = "有成為學霸的潛質喔 但還可以更高分啦!"; msgDisplay.style.color = "#2980b9"; }
-                else if (totalScore < 3100) { msgDisplay.innerText = "哇！差一點就滿分了！有空可以再向滿分挑戰喔！"; msgDisplay.style.color = "#27ae60"; }
-                else { msgDisplay.innerText = "你太棒啦 ! ! 藥理學歐趴 ! ! !"; msgDisplay.style.color = "#d35400"; }
-                panel.style.display = "block"; return true;
-            }
-            return false;
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = "#95a5a6"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(0, claw.y); ctx.lineTo(canvas.width, claw.y); ctx.stroke();
-            ctx.fillStyle = "#7f8c8d"; ctx.fillRect(0, canvas.height - 50, 60, 10); ctx.fillRect(50, canvas.height - 50, 10, 50);
-            for (let b of balls) {
-                ctx.fillStyle = b.color === "red" ? "#e74c3c" : (b.color === "blue" ? "#3498db" : "#ffffff");
-                ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = "rgba(255,255,255,0.4)"; ctx.beginPath(); ctx.arc(b.x - 5, b.y - 5, 4, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = "#2c3e50"; ctx.lineWidth = 1; ctx.stroke();
-            }
-            ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(claw.x, claw.y); ctx.lineTo(claw.x, claw.y + claw.ropeLength); ctx.stroke();
-            let curY = claw.y + claw.ropeLength; ctx.fillStyle = "#f39c12"; ctx.fillRect(claw.x - 15, curY, 30, 12); ctx.strokeStyle = "#d35400"; ctx.lineWidth = 4;
-            ctx.beginPath(); ctx.moveTo(claw.x - 12, curY + 12); ctx.lineTo(claw.x - 22, curY + 30); ctx.lineTo(claw.x - 8, curY + 36); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(claw.x + 12, curY + 12); ctx.lineTo(claw.x + 22, curY + 30); ctx.lineTo(claw.x + 8, curY + 36); stroke();
-        }
-        initBalls(); gameLoop();
-    </script>
-</body>
-</html>
+            pool.sort(()
